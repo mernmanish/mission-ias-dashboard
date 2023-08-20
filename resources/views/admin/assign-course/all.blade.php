@@ -22,14 +22,19 @@
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-header header-elements-inline bg-dark">
-				<h5 class="card-title"><i class="fa fa-list" aria-hidden="true"></i> List of Assign Course</h5>
-				<div class="header-elements">
+				<h5 class="card-title"><i class="fa fa-list" aria-hidden="true"></i> List of Assign Course </h5>
+                <div class="header-elements">
+					<div class="list-icons">
+                		<button class="btn bg-danger btn-sm" style="float: right" data-toggle="modal" data-target="#exampleModal">Search Assign Course</button>
+                	</div>
+            	</div>
+				{{-- <div class="header-elements">
 					<div class="list-icons">
                 		<a class="list-icons-item" data-action="collapse"></a>
                 		<a class="list-icons-item" data-action="reload"></a>
                 		<a class="list-icons-item" data-action="remove"></a>
                 	</div>
-            	</div>
+            	</div> --}}
 			</div>
 			<div class="card-body">
 				<div class="row">
@@ -96,26 +101,108 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-search" aria-hidden="true"></i> Search Course Assigned User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="form-group col-md-8">
+                <label for="book_title"> Search Users By Mobile No <span class="text-danger">*</span></label>
+                <div class="input-group mb-1">
+                    <input type="text" name="mobile" id="mobile" class="form-control mobile" placeholder="Search Users By Mobile No" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                    <div class="input-group-append" style="margin-left: 0rem;">
+                      <button class="btn btn-danger search_mobile" type="button" style="padding: 0 10px 0 10px;">Go !</button>
+                    </div>
+                </div>
+                <span class="errorText" style="display: none"></span>
+            </div>
+            <div class="search-student">
+                <div class="table-responsive">
+                    <table class="table  table-bordered table-hover">
+                        <thead class="bg-teal-400">
+                            <th>#</th>
+                            <th>User Name</th>
+                            <th>Mobile</th>
+                            <th>Course</th>
+                        </thead>
+                        <tbody class="studentDataList">
+
+                        </tbody>
+
+                    </table>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> --}}
+      </div>
+    </div>
+  </div>
 @endsection
 @push('footscript')
+<script>
+    $(document).on('click','.search_mobile',function(){
+        var searchUser=$('.mobile').val();
+        if(searchUser =='')
+        {
+            $('.errorText').show().text('Please Enter Mobile No!')
+        }
+        else{
+ 		   $.ajaxSetup({
+	          headers: {
+	              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+	          }
+	        });
+		   var userData={"mobile":searchUser};
+
+		    $.ajax({
+		        type: 'POST',
+		        url: '{{ route('searchAssignedCourse') }}',
+		        dataType: 'json',
+		        data: userData,
+		        success:function(data){
+                $('.studentDataList').html(data.output);
+		        }
+		    });
+        }
+    });
+</script>
 <script type="text/javascript">
     $(function () {
 
     var table = $('#tableDD').DataTable({
         // processing: true,
-        serverSide: true,
+        "jQueryUI"   : true,
+        "paging"     : true,
+        "lengthMenu" : [ 10, 25, 50, 75, 100,500],
+        "autoWidth"  : false,
+        "stateSave"  : false,
+        "order"      : [[ 0, 'asc' ]],
+        "processing" : true,
+        "scrollX"    : true,
+        "serverSide" : true,
+        "searching": false,
+        //serverSide: true,
         ajax: "{{ route('all-assign-course') }}",
         columns: [
             {data: 'id', name: 'id'},
             // {data:  name: 'image', orderable: false, searchable: false},
-            {data: 'userName', name: 'userName'},
-            {data: 'userMobile', name: 'userMobile'},
+            {data: 'user_name', name: 'user_name'},
+            {data: 'mobile', name: 'mobile',sortable: true, searchable: true},
             {data: 'userCourse', name: 'userCourse'},
             {data: 'amount', name: 'amount'},
             {data: 'joinDate', name: 'joinDate'},
             {data: 'expiryDate', name: 'expiryDate'},
             {data: 'status', name: 'status',},
-            {data: 'actions', name: 'actions', orderable: false, searchable: false},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
 

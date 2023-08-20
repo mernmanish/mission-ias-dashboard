@@ -228,6 +228,7 @@ Route::post('/store-assign-course',[AssignCourseController::class,'store'])->nam
 Route::post('/changeAssign',[AssignCourseController::class,'change'])->name('changeAssign');
 Route::post('/import-assign-excel',[AssignCourseController::class,'import'])->name('import-assign-excel');
 Route::get('/online-payment',[AssignCourseController::class,'onlinePayment'])->name('online-payment');
+Route::post('/searchAssignedCourse',[AssignCourseController::class,'searchAssignedCourse'])->name('searchAssignedCourse');
 
 
 

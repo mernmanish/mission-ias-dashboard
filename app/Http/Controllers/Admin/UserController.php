@@ -59,8 +59,16 @@ class UserController extends Controller
                     $join = date('d-F-Y',strtotime($row->join_date));
                     return $join;
                 })
+
+                ->filterColumn('mobile', function ($row, $keyword) {
+                    if (stristr(__("mobile"), $keyword))
+                        $row->whereHas('mobile', function (Builder $row) {
+                            $row->where('mobile', );
+                        });
+                    })
                 // ->rawColumns(['action'])
                 ->make(true);
+
         }
 
         return view('admin.users.all');

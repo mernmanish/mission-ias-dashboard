@@ -28,11 +28,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        
+
         //print_r($request->all());
         $mobile = trim($request->mobile);
         $newPassword = trim($request->password);
         $password = md5($newPassword);
+        $fcm_token = $request->fcm_token;
+        print_r($fcm_token);
         $user = User::where(['mobile' => $mobile, 'password'=> $password])->first();
         // print_r($user);
         if (! empty($user)) {
@@ -40,7 +42,8 @@ class AuthController extends Controller
             $responseArray['token'] = $user->createToken('MyApp')->accessToken;
             $responseArray['data'] = $user;
             User::where('id',$user->id)->update([
-                'is_login' =>'yes'
+                'is_login' =>'yes',
+                'fcm_token' => $fcm_token
             ]);
             return response()->json($responseArray,200);
         }
@@ -62,6 +65,7 @@ class AuthController extends Controller
         {
             return response()->json($validator->errors(),202);
         }
+        try{
         // $input = $request->all();
         $password = md5($request->password);
         $user = User::create([
@@ -70,12 +74,18 @@ class AuthController extends Controller
             'mobile' => $request->mobile,
             'password' => $password,
             'city' => $request->city,
+            'fcm_token' => $request->fcm_token,
             'join_date' => date('Y-m-d')
         ]);
         $responseArray = [];
         $responseArray['token'] = $user->createToken('MyApp')->accessToken;
         $responseArray['data'] = $user;
         return response()->json($responseArray,200);
+      }
+    catch(\Exception $e)
+    {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
 
     public function create()

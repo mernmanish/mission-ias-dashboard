@@ -28,21 +28,12 @@ class AssignCourseController extends Controller
             $data = AssignCourse::select('*')->orderBy('id','desc');
             return Datatables::of($data)
                 ->addIndexColumn()
-                // ->addColumn('image', function ($row) {
-                //     if(!empty($row->image_link)){
-                //     return '<img src="' . $row->image_link . '" alt="User Image" style="height:30px">';
-                //     }
-                //     else
-                //     {
-                //         return '';
-                //     }
-                //   })
-                  ->rawColumns(['status','actions'])
-                  ->addColumn('status', function ($rows) {
+                  ->rawColumns(['status','action','user_name'])
+                  ->addColumn('status', function ($row) {
                     $btn = '';
-                    if ($rows->status == 'active') {
+                    if ($row->status == 'active') {
                         $btn .= '<span class="badge rounded-pill bg-success">Active</span>';
-                    } elseif ($rows->status == 'inactive') {
+                    } elseif ($row->status == 'inactive') {
                         $btn .= '<span class="badge rounded-pill bg-danger">Inactive</span>';
                     } else {
                         $btn .= '<span class="badge rounded-pill bg-warning">Block</span>';
@@ -50,7 +41,7 @@ class AssignCourseController extends Controller
                     return $btn;
                 })
                 // ->rawColumns(['actions'])
-                ->addColumn('actions', function ($row) {
+                ->addColumn('action', function ($row) {
                     $actionData = '';
                     $actionData .= '<div class="list-icons">
                     <div class="dropdown">
@@ -74,13 +65,13 @@ class AssignCourseController extends Controller
                     $join = date('d-M-Y',strtotime($row->join_date));
                     return $join;
                 })
-                ->addColumn('userName', function ($row) {
+                ->addColumn('user_name', function ($row) {
                     $user_name = $row->user->name ?? 'N/A';
                     return $user_name;
                 })
-                ->addColumn('userMobile', function ($row) {
-                    $user_mobile = $row->user->mobile ?? 'N/A';
-                    return $user_mobile;
+                ->addColumn('mobile', function ($row) {
+                    $mobile = $row->mobile ?? 'N/A';
+                    return $mobile;
                 })
                 ->addColumn('userCourse', function ($row) {
                     $user_course = $row->course->name ?? 'N/A';
@@ -90,10 +81,10 @@ class AssignCourseController extends Controller
                     $join = date('d-M-Y',strtotime($row->expire_date));
                     return $join;
                 })
-                // ->rawColumns(['action'])
+                //->rawColumns(['action'])
                 ->make(true);
         }
-        // $assignData = AssignCourse::orderBy('join_date','desc')->get();
+        //$assignData = AssignCourse::orderBy('join_date','desc')->get();
         return view('admin.assign-course.all');
     }
 
@@ -318,5 +309,32 @@ class AssignCourseController extends Controller
     {
         $all = UserPayment::get();
         return view('admin.assign-course.payment-history',['payment' => $all]);
+    }
+
+    public function searchAssignedCourse(Request $request)
+    {
+        $mobile = $request->mobile;
+        $student = AssignCourse::where('mobile',$mobile)->get();
+        $output = '';
+        if($student->count() > 0)
+        {
+            $i =1;
+            foreach($student as $rows)
+            {
+                $output.='<tr>
+                <td>'.$i++.'</td>
+                <td>'.$rows->user->name.'</td>
+                <td>'.$rows->mobile.'</td>
+                <td>'.$rows->course->name.'</td>
+            </tr>';
+            }
+        }
+        else{
+            $output .='<td colspan="4" class="text-center">No Assigned Course Found</td>';
+        }
+        $data = [
+            'output' => $output
+        ];
+        return response()->json($data);
     }
 }
