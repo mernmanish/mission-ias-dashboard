@@ -149,7 +149,7 @@ class AssignCourseController extends Controller
             return redirect('add-assign-course')->with('error','Course Already Assigned.');
         }
         else{
-            $data = [
+            $assignedData = [
                 'user_id' => $request->user_id,
                 'mobile' => $request->mobile,
                 'course_id' => $request->course_id,
@@ -158,18 +158,81 @@ class AssignCourseController extends Controller
                 'expire_date' => $expire_date,
                 'remarks' => $request->remarks
             ];
+            $userData = User::where('id',$request->user_id)->latest()->first();
+            $courseData = Course::where('id',$request->course_id)->latest()->first();
             //dd($data);
             if($request->id=="")
             {
-                $event = AssignCourse::create($data);
+                $event = AssignCourse::create($assignedData);
+
+                $data = [];
+                $data ['message'] = $courseData->name." has been assigned successfully, Best of Luck !";
+                $data ['title'] = "Dear ".$userData->name;
+                $tokens = [];
+                $tokens = User::whereNotNull('fcm_token')->where('id',$request->user_id)->pluck('fcm_token')->toArray();
+                // $tokens [] = 'cS0AhkSAAp4N2eSOjgxcWn:APA91bGxXxRMwxQfOMbY7IabgSaRSJP1DCV8btEntGhs8B8zokRcVoOvYASp0hvgcfdgvaTmQXt3icbo2rAIgz8G5K4HXqn8u4Uk4OaZ_CbtAct_v3p1GKHoYCQSy2ArgjWkMmr7Xm-7';
+                $response = $this->sendFirebasePush($tokens,$data);
+                //dd($response);
                 return redirect('all-assign-course')->with('message','Course Assign successfully.');
             }
             else
             {
-                $event = AssignCourse::where('id',$request->id)->update($data);
+                $event = AssignCourse::where('id',$request->id)->update($assignedData);
                 return redirect('all-assign-course')->with('message','Course Assign Changed successfully.');
             }
         }
+
+    }
+    public function sendFirebasePush($tokens,$data)
+    {
+        //dd($tokens);
+        $serverKey = 'AAAAppqxtyA:APA91bESvm1Aor7yo2-guZ2z8O44UWF28QGvr1i853BtHFex2ef11vfb1l8Vx2Bh6iQ1uIPFvlciYtbHBezE_IR1FMxFrGxbO90227XHBJUFH-qO1noEIhrCSe1rgDyrUaqMfuAiFwX-';
+        $msg = array(
+            'message'=>$data['message']
+            // 'description' => $data['description']
+        );
+        $notifyData = [
+            "body" => $data['message'],
+            "title" => $data['title']
+        ];
+
+        $registrationIds = $tokens;
+        if(count($tokens) > 1)
+        {
+            $fields = array(
+                'registration_ids' => $registrationIds,
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        else{
+            $fields = array(
+                'to' => $registrationIds[0],
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        $headers [] = 'Content-Type: application/json';
+        $headers [] = 'Authorization: key='.$serverKey;
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        // curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        if ($result === FALSE)
+        {
+            die('FCM Send Error: ' . curl_error($ch));
+            dd('lll');
+        }
+        curl_close( $ch );
+        // dd($result);
+        return $result;
+        //return redirect()->back()->with('message', 'Notification send Successfully');
 
     }
 

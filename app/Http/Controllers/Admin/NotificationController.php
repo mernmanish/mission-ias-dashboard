@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\User;
 class NotificationController extends Controller
 {
     /**
@@ -22,24 +22,30 @@ class NotificationController extends Controller
         // dd($request->all());
         $data = [];
         $data ['message'] = $request->message;
-        $data ['description'] = 'please everyone join Classes';
+        $data ['title'] = $request->title;
 
         $tokens = [];
-        $tokens [] = 'eIT-M1iIRlacuoK-98QobX:APA91bFr336omvHvjqM4ovT0NvORpZlk0gf7o-sWQ-mEO6-5S2J-4VVhZnRlBe9OFkAeu6nYBtW3rSnIz9W0GB1HL0FomSiFu-BrJQTJiIdNUtEwQGgf-a86gOD2jRilIUXLyVn5yyOO';
+        // $tokens [] = 'ckUq5622SneHppaCOB_PMk:APA91bGxHAGQOnXKcn2RSF8d66udGvAGULAbUSLUPfSu_Y4f4Y1sExjvBr3SEOmRwBLsA0RXVxgz4u-jlqko4ITUR4GSpTR2Jx08acrYBkJC2n6848UjHGYUp3CnMnnigtdvNkON_wIu';
+        // $tokens [] = 'eIT-M1iIRlacuoK-98QobX:APA91bFr336omvHvjqM4ovT0NvORpZlk0gf7o-sWQ-mEO6-5S2J-4VVhZnRlBe9OFkAeu6nYBtW3rSnIz9W0GB1HL0FomSiFu-BrJQTJiIdNUtEwQGgf-a86gOD2jRilIUXLyVn5yyOO';
+        $tokens = User::whereNotNull('fcm_token')->where('is_login','yes')->pluck('fcm_token')->toArray();
+        // $tokens [] = 'cS0AhkSAAp4N2eSOjgxcWn:APA91bGxXxRMwxQfOMbY7IabgSaRSJP1DCV8btEntGhs8B8zokRcVoOvYASp0hvgcfdgvaTmQXt3icbo2rAIgz8G5K4HXqn8u4Uk4OaZ_CbtAct_v3p1GKHoYCQSy2ArgjWkMmr7Xm-7';
         $response = $this->sendFirebasePush($tokens,$data);
+        //dd($response);
+        return redirect()->back()->with('message', 'Notification send Successfully');
+
     }
 
     public function sendFirebasePush($tokens,$data)
     {
-        //dd($data);
+        //dd($tokens);
         $serverKey = 'AAAAppqxtyA:APA91bESvm1Aor7yo2-guZ2z8O44UWF28QGvr1i853BtHFex2ef11vfb1l8Vx2Bh6iQ1uIPFvlciYtbHBezE_IR1FMxFrGxbO90227XHBJUFH-qO1noEIhrCSe1rgDyrUaqMfuAiFwX-';
         $msg = array(
-            'message'=>$data['message'],
-            'description' => $data['description']
+            'message'=>$data['message']
+            // 'description' => $data['description']
         );
         $notifyData = [
             "body" => $data['message'],
-            "title" => 'Mission Classes'
+            "title" => $data['title']
         ];
 
         $registrationIds = $tokens;
@@ -76,9 +82,9 @@ class NotificationController extends Controller
             dd('lll');
         }
         curl_close( $ch );
-        dd($result);
+        // dd($result);
         return $result;
-        return redirect()->back()->with('message', 'Notification send Successfully');
+        //return redirect()->back()->with('message', 'Notification send Successfully');
 
     }
 

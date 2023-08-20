@@ -13,6 +13,8 @@ use App\Models\Video;
 use App\Models\VideoChat;
 use App\Models\VideoChatReply;
 use App\Models\LiveClass;
+use App\Models\User;
+use App\Models\AssignCourse;
 use DateTime;
 use DateInterval;
 use Carbon\Carbon;
@@ -57,7 +59,7 @@ class LiveClassController extends Controller
         // $interval = new DateInterval('PT24H'); // PT24H represents 24 hours duration
         // $currentDateTime->add($interval);
         $expiry_date = $currentDateTime->addDays(1);
-        $data = [
+        $liveData = [
             'course_id' => $request->course_id,
             'category_id' => $request->category_id,
             'subcategory_id' => $request->subcategory_id,
@@ -68,6 +70,8 @@ class LiveClassController extends Controller
             'access' => $request->access,
             'expiry_date' => $expiry_date
         ];
+        $courseData = Course::where('id',$request->course_id)->latest()->first();
+
         // $videData = [
         //     'course_id' => $request->course_id,
         //     'category_id' => $request->category_id,
@@ -80,7 +84,7 @@ class LiveClassController extends Controller
         // ];
         if ($request->hasFile('image_link')) {
             $file = $request->file('image_link')->move('video', $request->file('image_link')->getClientOriginalName());
-            $data['image_link'] = $file->getPathname();
+            $liveData['image_link'] = $file->getPathname();
         }
         // if ($request->hasFile('image_link')) {
         //     $file = $request->file('image_link')->move('video', $request->file('image_link')->getClientOriginalName());
@@ -90,7 +94,7 @@ class LiveClassController extends Controller
         if($request->id=="")
         {
             // $videoAdd = Video::create($videData);
-            $video = LiveClass::create($data);
+            $video = LiveClass::create($liveData);
             $vidData = [
                 'course_id' => $video->course_id,
                 'category_id' => $video->category_id,
@@ -103,13 +107,75 @@ class LiveClassController extends Controller
                 'image_link' => $video->image_link
             ];
             $videoAdd = Video::create($vidData);
+            $data = [];
+            $data ['message'] = "Join Live Class for ".$request->video_title;
+            $data ['title'] = $courseData->name;
+            $tokens = [];
+            $assignedData = AssignCourse::where('course_id',$video->course_id)->pluck('user_id')->toArray();
+
+            $tokens = User::whereNotNull('fcm_token')->whereIn('id',$assignedData)->pluck('fcm_token')->toArray();
+            // $tokens [] = 'cS0AhkSAAp4N2eSOjgxcWn:APA91bGxXxRMwxQfOMbY7IabgSaRSJP1DCV8btEntGhs8B8zokRcVoOvYASp0hvgcfdgvaTmQXt3icbo2rAIgz8G5K4HXqn8u4Uk4OaZ_CbtAct_v3p1GKHoYCQSy2ArgjWkMmr7Xm-7';
+            $response = $this->sendFirebasePush($tokens,$data);
+            //dd($response);
             return redirect('all-live-class')->with('message','Live Class created successfully.');
-        }
+            }
         else
         {
             $video = LiveClass::where('id',$request->id)->update($data);
             return redirect('all-live-class')->with('message','Live Class Updated successfully.');
         }
+    }
+    public function sendFirebasePush($tokens,$data)
+    {
+        //dd($tokens);
+        $serverKey = 'AAAAppqxtyA:APA91bESvm1Aor7yo2-guZ2z8O44UWF28QGvr1i853BtHFex2ef11vfb1l8Vx2Bh6iQ1uIPFvlciYtbHBezE_IR1FMxFrGxbO90227XHBJUFH-qO1noEIhrCSe1rgDyrUaqMfuAiFwX-';
+        $msg = array(
+            'message'=>$data['message']
+            // 'description' => $data['description']
+        );
+        $notifyData = [
+            "body" => $data['message'],
+            "title" => $data['title']
+        ];
+
+        $registrationIds = $tokens;
+        if(count($tokens) > 1)
+        {
+            $fields = array(
+                'registration_ids' => $registrationIds,
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        else{
+            $fields = array(
+                'to' => $registrationIds[0],
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        $headers [] = 'Content-Type: application/json';
+        $headers [] = 'Authorization: key='.$serverKey;
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        // curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        if ($result === FALSE)
+        {
+            die('FCM Send Error: ' . curl_error($ch));
+            dd('lll');
+        }
+        curl_close( $ch );
+        // dd($result);
+        return $result;
+        //return redirect()->back()->with('message', 'Notification send Successfully');
+
     }
     protected function validator(array $data)
     {

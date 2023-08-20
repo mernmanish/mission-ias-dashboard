@@ -52,18 +52,18 @@
                         </span>
                         @endif
                     </div> --}}
-                    <div class="form-group col-md-6">
-                        <label for="name">User Token <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="Enter User Token" id="fcm_token" name="fcm_token" value="fGtar3tSTgGEry_cmr6Ug4:APA91bEbTBaLd32Sfx1vYs8slvaZOTAzLQsnn2X-y7XW5vUzUDMR-67vPapa1feHi-fhU3MxU1GmEyCWPh3ECfgBeVJB7r3bTVP6KwAFb4KW_FRxj0d01XwlrHkfC7y6F3Er5nODIxqy">
-                        @if ($errors->has('fcm_token'))
+                    <div class="form-group col-md-4">
+                        <label for="title">Message Title<span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" placeholder="Enter Message Title" id="title" name="title" required>
+                        @if ($errors->has('title'))
                         <span class="help-block errorText">
-                        {{ $errors->first('fcm_token') }}
+                        {{ $errors->first('title') }}
                         </span>
                         @endif
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-8">
                         <label for="message">Message <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" placeholder="Enter Message" id="message" name="message">
+                        <input type="text" class="form-control" placeholder="Enter Message" id="message" name="message" required>
                         @if ($errors->has('message'))
                         <span class="help-block errorText">
                         {{ $errors->first('message') }}
