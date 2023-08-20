@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\TestSeriesController;
 use App\Http\Controllers\Admin\TestSeriesQuestionController;
 use App\Http\Controllers\Admin\AssignCourseController;
 use App\Http\Controllers\Admin\LiveClassController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\WebHomeController;
 use App\Http\Controllers\WebAboutController;
 use App\Http\Controllers\WebBookController;
@@ -197,6 +198,10 @@ Route::get('/delete-user-data/{id}',[UserController::class,'delete']);
 Route::get('/login-users',[UserController::class,'loginUser'])->name('login-users');
 Route::get('/user-bulk-upload',[UserController::class,'userBulkUpload'])->name('user-bulk-upload');
 Route::post('/import-user-excel',[UserController::class,'importUserExcel'])->name('import-user-excel');
+
+
+Route::get('/notification',[NotificationController::class,'index'])->name('notification');
+Route::post('/send-notification',[NotificationController::class,'sendNotification'])->name('send-notification');
 
 
 Route::get('/all-test-series',[TestSeriesController::class,'index'])->name('all-test-series');

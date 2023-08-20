@@ -389,7 +389,7 @@
                                 <li class="nav-item"><a href="{{ route('login-users') }}" class="nav-link"><i
                                         class="fa fa-list" aria-hidden="true"></i>User Login List</a></li>
                                 <li class="nav-item"><a href="{{ route('user-bulk-upload') }}" class="nav-link"><i class="fa fa-list" aria-hidden="true"></i>Bulk Upload</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link"><i
+                                <li class="nav-item"><a href="{{ route('notification') }}" class="nav-link"><i
                                             class="fa fa-list" aria-hidden="true"></i>User Notification</a></li>
                             </ul>
                         </li>
