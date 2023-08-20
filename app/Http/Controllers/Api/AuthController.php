@@ -34,7 +34,11 @@ class AuthController extends Controller
         $newPassword = trim($request->password);
         $password = md5($newPassword);
         $fcm_token = $request->fcm_token;
-        print_r($fcm_token);
+        //print_r($fcm_token);
+        try{
+        $user = User::where(['mobile' => $mobile])->first();
+        if($user)
+        {
         $user = User::where(['mobile' => $mobile, 'password'=> $password])->first();
         // print_r($user);
         if (! empty($user)) {
@@ -48,8 +52,17 @@ class AuthController extends Controller
             return response()->json($responseArray,200);
         }
         else{
-            return response()->json(['error' => 'Unauthenticated'],203);
+            return response()->json(['message' => 'invalid credentials'],400);
         }
+       }
+       else{
+        return response()->json(['status'=>false,'message' => 'user not found'],404);
+       }
+    }
+    catch(\Exception $e)
+    {
+        return response()->json(['error' => $e->getMessage()], 500);
+    }
     }
 
     public function registration(Request $request)
