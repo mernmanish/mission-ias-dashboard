@@ -36,8 +36,8 @@ class AuthController extends Controller
         $fcm_token = $request->fcm_token;
         //print_r($fcm_token);
         try{
-        $user = User::where(['mobile' => $mobile])->first();
-        if($user)
+        $userData = User::where(['mobile' => $mobile])->first();
+        if($userData)
         {
         $user = User::where(['mobile' => $mobile, 'password'=> $password])->first();
         // print_r($user);

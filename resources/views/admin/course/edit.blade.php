@@ -31,7 +31,7 @@
 						<select name="course_type_id" id="course_type_id" class="form-control" style="padding: 7px;">
                             <option value="">Select Course Type</option>
                             @foreach ($cType as $rows)
-                            <option value="{{$rows->id}}">{{$rows->course_type}}</option>
+                            <option value="{{$rows->id}}" {!!$rows->id==$course->course_type_id ? 'selected' :    '' !!}>{{$rows->course_type}}</option>
                            @endforeach
                         </select>
 						@if ($errors->has('course_type_id'))
@@ -64,7 +64,16 @@
                         </span>
                         @endif
                     </div>
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-6">
+                        <label for="whats_app_link">What's App Group Link</label>
+                        <input type="text" class="form-control" name="whats_app_link" id="whats_app_link" placeholder="Enter What's App Group Link" value="{{$course->whats_app_link}}">
+                        @if ($errors->has('whats_app_link'))
+                        <span class="help-block errorText">
+                        {{ $errors->first('whats_app_link') }}
+                        </span>
+                        @endif
+                    </div>
+                    <div class="form-group col-md-6">
                         <label for="image_link">Image</label>
                         <div class="input-group mb-3">
                             <div class="custom-file">

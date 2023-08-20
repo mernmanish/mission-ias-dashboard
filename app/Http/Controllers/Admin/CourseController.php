@@ -34,6 +34,7 @@ class CourseController extends Controller
              $category->course_id=$request->course_id;
              $category->remarks=$request->remarks;
              $category->mip_address=$request->ip();
+             $category->whats_app_link=$request->whats_app_link;
              $category->mu_id=session('sessionadmin')['id'];
         }
         else{
@@ -122,6 +123,7 @@ class CourseController extends Controller
             'course_fee' => $request->course_fee,
             'discount_fee' => $request->discount_fee,
             'description' =>  $request->description,
+            'whats_app_link' =>  $request->whats_app_link,
         ];
 
         // if ($request->hasFile('image')) {
@@ -159,6 +161,7 @@ class CourseController extends Controller
             'course_fee' => 'required',
             'discount_fee' => 'required',
             'description' => 'required',
+            'whats_app_link' => 'required',
             'image_link' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:1024'],
         ]);
 

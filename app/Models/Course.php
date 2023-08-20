@@ -12,6 +12,7 @@ class Course extends Model
         'name',
         'course_type_id',
         'image',
+        'whats_app_link',
         'syllabus',
         'duration',
         'course_fee',
