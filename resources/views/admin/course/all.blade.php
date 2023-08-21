@@ -16,7 +16,7 @@
 <div class="mb-3">
 	<h4 class="mb-0 font-weight-semibold">
 		<i class="fa fa-angle-double-right" aria-hidden="true"></i> List of Courses
-	<a href="{{ url('course') }}" class="btn btn-dark pull-right">Add New Course</a></h4>
+	<a href="{{ url('addCourses') }}" class="btn btn-dark pull-right">Add New Course</a></h4>
 </div>
 <div class="row">
 	<div class="col-md-12">

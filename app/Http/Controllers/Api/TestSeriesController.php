@@ -76,6 +76,8 @@ class TestSeriesController extends Controller
             $question_id = explode(",",$request->question_id);
             $answer = explode(",",$request->answer);
             $correct_answer = explode(",",$request->correct_answer);
+            TestAttempt::where(['test_id'=>$request->test_id,'user_id'=>Auth::user()->id])->delete();
+            TestStats::where(['test_id'=>$request->test_id,'user_id'=>Auth::user()->id])->delete();
             foreach($question_id as $key => $val)
             {
                 $data = [

@@ -142,10 +142,10 @@
         var datas = <?php echo json_encode($datas); ?>;
         Highcharts.chart('container-highcharts', {
             title: {
-                text: 'Mission IAS Student List in <?php echo date('Y'); ?>'
+                text: 'Mission User List in <?php echo date('Y'); ?>'
             },
             subtitle: {
-                text: 'Mission IAS User List'
+                text: 'Mission User List'
             },
             xAxis: {
                 categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -154,7 +154,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Number of Missio IAS Students'
+                    text: 'Number of Missio Users'
                 }
             },
             legend: {
@@ -168,7 +168,7 @@
                 }
             },
             series: [{
-                name: 'Total Member',
+                name: 'Total Users',
                 data: datas
             }],
             responsive: {

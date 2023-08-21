@@ -13,6 +13,7 @@ use App\Models\Batch;
 use App\Models\Subject;
 use App\Models\Topic;
 use App\Models\CourseType;
+use App\Models\User;
 class CourseController extends Controller
 {
 
@@ -116,7 +117,7 @@ class CourseController extends Controller
     public function manageCourse(Request $request)
     {
         $this->validator($request->all())->validate();
-        $data = [
+        $courseData = [
             'name' => $request->name,
             'duration' => $request->duration,
             'course_type_id' => $request->course_type_id,
@@ -133,22 +134,85 @@ class CourseController extends Controller
 
         if ($request->hasFile('image_link')) {
             $file = $request->file('image_link')->move('course', $request->file('image_link')->getClientOriginalName());
-            $data['image'] = $file->getPathname();
+            $courseData['image'] = $file->getPathname();
         }
         if ($request->hasFile('syllabus')) {
             $file = $request->file('syllabus')->move('course', $request->file('syllabus')->getClientOriginalName());
-            $data['syllabus'] = $file->getPathname();
+            $courseData['syllabus'] = $file->getPathname();
         }
         if($request->id=="")
         {
-            $video = Course::create($data);
+            $video = Course::create($courseData);
+            $data = [];
+            $data ['message'] = 'Join With Mission for Better Preparation';
+            $data ['title'] = $request->name ." Batch Coming Soon";
+
+            $tokens = [];
+            // $tokens [] = 'ckUq5622SneHppaCOB_PMk:APA91bGxHAGQOnXKcn2RSF8d66udGvAGULAbUSLUPfSu_Y4f4Y1sExjvBr3SEOmRwBLsA0RXVxgz4u-jlqko4ITUR4GSpTR2Jx08acrYBkJC2n6848UjHGYUp3CnMnnigtdvNkON_wIu';
+            // $tokens [] = 'eIT-M1iIRlacuoK-98QobX:APA91bFr336omvHvjqM4ovT0NvORpZlk0gf7o-sWQ-mEO6-5S2J-4VVhZnRlBe9OFkAeu6nYBtW3rSnIz9W0GB1HL0FomSiFu-BrJQTJiIdNUtEwQGgf-a86gOD2jRilIUXLyVn5yyOO';
+            $tokens = User::whereNotNull('fcm_token')->where('is_login','yes')->pluck('fcm_token')->toArray();
+            // $tokens [] = 'cS0AhkSAAp4N2eSOjgxcWn:APA91bGxXxRMwxQfOMbY7IabgSaRSJP1DCV8btEntGhs8B8zokRcVoOvYASp0hvgcfdgvaTmQXt3icbo2rAIgz8G5K4HXqn8u4Uk4OaZ_CbtAct_v3p1GKHoYCQSy2ArgjWkMmr7Xm-7';
+            $response = $this->sendFirebasePush($tokens,$data);
+            //dd($response);
             return redirect('course-list')->with('message','Course created successfully.');
         }
         else
         {
-            $video = Course::where('id',$request->id)->update($data);
+            $video = Course::where('id',$request->id)->update($courseData);
             return redirect('course-list')->with('message','Course Updated successfully.');
         }
+    }
+    public function sendFirebasePush($tokens,$data)
+    {
+        //dd($tokens);
+        $serverKey = 'AAAAppqxtyA:APA91bESvm1Aor7yo2-guZ2z8O44UWF28QGvr1i853BtHFex2ef11vfb1l8Vx2Bh6iQ1uIPFvlciYtbHBezE_IR1FMxFrGxbO90227XHBJUFH-qO1noEIhrCSe1rgDyrUaqMfuAiFwX-';
+        $msg = array(
+            'message'=>$data['message']
+            // 'description' => $data['description']
+        );
+        $notifyData = [
+            "body" => $data['message'],
+            "title" => $data['title']
+        ];
+
+        $registrationIds = $tokens;
+        if(count($tokens) > 1)
+        {
+            $fields = array(
+                'registration_ids' => $registrationIds,
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        else{
+            $fields = array(
+                'to' => $registrationIds[0],
+                'notification' => $notifyData,
+                'data' => $msg,
+                'priority' => 'high'
+            );
+        }
+        $headers [] = 'Content-Type: application/json';
+        $headers [] = 'Authorization: key='.$serverKey;
+        $ch = curl_init();
+        curl_setopt( $ch,CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send' );
+        curl_setopt( $ch,CURLOPT_POST, true );
+        curl_setopt( $ch,CURLOPT_HTTPHEADER, $headers );
+        curl_setopt( $ch,CURLOPT_RETURNTRANSFER, true );
+        // curl_setopt( $ch,CURLOPT_SSL_VERIFYPEER, false );
+        curl_setopt( $ch,CURLOPT_POSTFIELDS, json_encode( $fields ) );
+        $result = curl_exec($ch );
+        if ($result === FALSE)
+        {
+            die('FCM Send Error: ' . curl_error($ch));
+           // dd('lll');
+        }
+        curl_close( $ch );
+        // dd($result);
+        return $result;
+        //return redirect()->back()->with('message', 'Notification send Successfully');
+
     }
     protected function validator(array $data)
     {

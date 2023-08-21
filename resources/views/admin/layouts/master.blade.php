@@ -133,7 +133,7 @@
     <div class="navbar navbar-expand-md navbar-dark bg-blue navbar-static">
         <div class="navbar-brand">
             <a href="{{ url('dashboard') }}" class="d-inline-block">
-                <h4 class="text-center" style="font-size: 18px; color:#ffffff; font-weight:bold;">Mission <span style="color: #cd1000">IAS</span> Admin</h4>
+                <h4 class="text-center" style="font-size: 18px; color:#ffffff; font-weight:bold;">Mission <span style="color: #cd1000">Admin</span> Panel</h4>
                 {{-- <img src="{{ asset('img/mission-ias.jpg') }}" alt="" style=" height: 30px; width:100%;"> --}}
             </a>
         </div>
@@ -490,7 +490,7 @@
             <div id="navbar-footer">
                 <span class="navbar-text d-none d-sm-block float-left">
                     &copy; 2023 - 2024. <a href="#">Copyright @</a> <a href="#"
-                        target="_blank"><span style="color: #cb2316; font-weight:bold;">Mission IAS</span>.</a>
+                        target="_blank"><span style="color: #cb2316; font-weight:bold;">Mission</span>.</a>
                 </span>
 
                 <ul class="ml-lg-auto float-right">

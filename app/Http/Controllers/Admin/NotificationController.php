@@ -79,7 +79,7 @@ class NotificationController extends Controller
         if ($result === FALSE)
         {
             die('FCM Send Error: ' . curl_error($ch));
-            dd('lll');
+           // dd('lll');
         }
         curl_close( $ch );
         // dd($result);
