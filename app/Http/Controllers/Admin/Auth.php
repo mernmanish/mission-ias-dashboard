@@ -68,21 +68,14 @@ class Auth extends Controller
     public function store(Request $request)
     {
         if (! empty($request->aid)) {
-             $validator=$request->validate([
-                'name'=>'required',
-                'mobile'=>'required|digits:10',
-                'email'=>'required|max:255|email|unique:states,name',
-                'image'  =>  'image|mimes:jpeg,png,jpg,gif|max:528'
-            ]);
+
             $admin = Admin::find($request->aid);
              $admin->name=$request->name;
              $admin->mobile=$request->mobile;
              $admin->gender=$request->gender;
-             $admin->state_id=$request->state_id;
-             $admin->dist_id=$request->dist_id;
-             $admin->city_id=$request->city_id;
              $admin->email=$request->email;
              $admin->pin_code=$request->pin_code;
+             $admin->user_type = $request->user_type;
              $admin->full_address=$request->full_address;
              $admin->mu_id=session('sessionadmin')['id'];
 
@@ -93,25 +86,14 @@ class Auth extends Controller
              }
         }
         else{
-             $validator=$request->validate([
-                'name'=>'required',
-                'mobile'=>'required|digits:10',
-                'email'=>'required|max:255|email|unique:states,name',
-                'password'=>'required|min:5',
-                'con_password'=>'required_with:password|same:password|min:5',
-                'image'  =>  'image|mimes:jpeg,png,jpg,gif|max:528'
-            ]);
            $admin=new Admin;
-
             $admin->name=$request->name;
             $admin->mobile=$request->mobile;
             $admin->gender=$request->gender;
-            $admin->state_id=$request->state_id;
-            $admin->dist_id=$request->dist_id;
-            $admin->city_id=$request->city_id;
             $admin->email=$request->email;
             $admin->pin_code=$request->pin_code;
             $admin->full_address=$request->full_address;
+            $admin->user_type = $request->user_type;
             $admin->password=Hash::make($request->con_password);
             $admin->cu_id=session('sessionadmin')['id'];
             $admin->mu_id=session('sessionadmin')['id'];

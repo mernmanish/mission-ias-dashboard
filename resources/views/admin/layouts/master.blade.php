@@ -291,8 +291,8 @@
                                     class="fa fa-list" aria-hidden="true"></i>All Videos</a></li>
                                 <li class="nav-item"><a href="{{ url('add-video') }}" class="nav-link"><i
                                     class="fa fa-list" aria-hidden="true"></i>Add Video</a></li>
-                                <li class="nav-item"><a href="{{ route('chat-list') }}" class="nav-link"><i
-                                        class="fa fa-list" aria-hidden="true"></i>All Chat</a></li>
+                                {{-- <li class="nav-item"><a href="{{ route('chat-list') }}" class="nav-link"><i
+                                        class="fa fa-list" aria-hidden="true"></i>All Chat</a></li> --}}
                             </ul>
                         </li>
                         <li class="nav-item nav-item-submenu">
@@ -374,9 +374,11 @@
                             <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                                 <li class="nav-item"><a href="{{ route('all-assign-course') }}" class="nav-link"><i
                                     class="fa fa-list" aria-hidden="true"></i>All Assign Course</a></li>
+                                @if(session('sessionadmin')['user_type']=="super_admin")
                                 <li class="nav-item"><a href="{{ route('add-assign-course') }}" class="nav-link"><i
                                         class="fa fa-list" aria-hidden="true"></i>Assign Course</a></li>
                                 <li class="nav-item"><a href="{{ route('assign-bulk-upload') }}" class="nav-link"><i class="fa fa-list" aria-hidden="true"></i>Bulk Upload</a></li>
+                                @endif
                                 <li class="nav-item"><a href="{{ route('online-payment') }}" class="nav-link"><i class="fa fa-list" aria-hidden="true"></i>Online Payment</a></li>
                             </ul>
                         </li>
@@ -393,20 +395,17 @@
                                             class="fa fa-list" aria-hidden="true"></i>User Notification</a></li>
                             </ul>
                         </li>
-
+                        @if(session('sessionadmin')['user_type']=="super_admin")
                         <li class="nav-item nav-item-submenu">
                             <a href="#" class="nav-link"><i class="fa fa-cog" style="font-size: 17px;" aria-hidden="true"></i>
                                 <span>Account Setting</span></a>
-
                             <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+
                                 <li class="nav-item"><a href="{{ url('admin-list') }}" class="nav-link"><i
                                             class="fa fa-list" aria-hidden="true"></i>Admin Registration</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"
-                                            aria-hidden="true"></i> Change Password</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link"><i class="fa fa-list"
-                                            aria-hidden="true"></i> Profile</a></li>
                             </ul>
                         </li>
+                        @endif
                         <!-- <li class="nav-item">
        <a href="#" class="nav-link"><i class="icon-cube4"></i> <span>Practice Test</span></a>
       </li>

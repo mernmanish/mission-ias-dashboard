@@ -77,6 +77,7 @@
 											</a>
 
 											<div class="dropdown-menu dropdown-menu-right">
+                                                <a href="{{url("chat-list/$rows->id")}}" class="dropdown-item"><i class="fa fa-commenting" aria-hidden="true"></i> All Chat</a>
 												<a href="{{url("edit-live-class/$rows->id")}}" class="dropdown-item"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 												<a data-href="{{url("delete-live-class/$rows->id")}}" onclick="deleteItem(this)" class="dropdown-item"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</</button>
                                                 @if($rows['status']==1)

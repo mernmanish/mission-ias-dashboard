@@ -200,7 +200,7 @@ class VideoController extends Controller
             'sender_id' =>session('sessionadmin')['id']
         ];
         $video = VideoChatReply::create($data);
-        return redirect('chat-list')->with('message','Message Reply successfully !');
+        return redirect()->back()->with('message','Message Reply successfully !');
     }
 
 

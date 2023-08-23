@@ -140,9 +140,9 @@ Route::post('/addVideo',[VideoController::class,'store'])->name('addVideo');
 Route::post('/changeVideos',[VideoController::class,'change'])->name('changeVideos');
 Route::get('/delete-video/{id}',[VideoController::class,'destroy']);
 Route::get('/edit-video/{id}',[VideoController::class,'edit']);
-Route::get('/chat-list',[VideoController::class,'chatList'])->name('chat-list');
+// Route::get('/chat-list',[VideoController::class,'chatList'])->name('chat-list');
 Route::post('/reply-chat-list',[VideoController::class,'replyChatList'])->name('reply-chat-list');
-Route::post('/add-reply-chat',[VideoController::class,'addReplyChat'])->name('add-reply-chat');
+// Route::post('/add-reply-chat',[VideoController::class,'addReplyChat'])->name('add-reply-chat');
 
 
 Route::get('/add-live-class',[LiveClassController::class,'addVideo'])->name('add-live-class');
@@ -151,6 +151,8 @@ Route::post('/addLiveClass',[LiveClassController::class,'store'])->name('addLive
 Route::post('/changeLiveClass',[LiveClassController::class,'change'])->name('changeLiveClass');
 Route::get('/delete-live-class/{id}',[LiveClassController::class,'destroy']);
 Route::get('/edit-live-class/{id}',[LiveClassController::class,'edit']);
+Route::get('/chat-list/{id}',[LiveClassController::class,'chatList']);
+Route::post('/add-reply-chat',[VideoController::class,'addReplyChat'])->name('add-reply-chat');
 
 
 Route::get('/all-books',[BookController::class,'index'])->name('all-books');

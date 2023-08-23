@@ -24,7 +24,7 @@ class LiveClassController extends Controller
     public function index()
     {
         $currentDateTime = now();
-        $video=LiveClass::whereDate('expiry_date','>', $currentDateTime)->orderBy('id','desc')->get();
+        $video=LiveClass::whereDate('created_at','=',$currentDateTime)->orderBy('id','desc')->get();
         return view('admin.live-class.all',['video'=>$video]);
     }
 
@@ -263,5 +263,11 @@ class LiveClassController extends Controller
     {
         LiveClass::find($id)->delete();
         return redirect('all-live-class')->with('message', 'Live Class deleted successfully.');
+    }
+
+    public function chatList($id)
+    {
+        $videoChat = VideoChat::where('video_id',$id)->get();
+        return view('admin.live-class.chat-list',['videoChat' => $videoChat]);
     }
 }

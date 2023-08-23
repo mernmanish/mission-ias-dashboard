@@ -17,7 +17,7 @@
 								<h5 class="mb-0">Login to your account</h5>
 							</div>
 							<div class="alert"></div>
-							<form class="login-form form-validate" method="post">
+							<form class="login-form form-validate" method="post" enctype="multipart/form-data">
                             @csrf
 							<div class="form-group form-group-feedback form-group-feedback-left">
 								<input type="text" class="form-control" name="loginname" placeholder="Enter Registred Mobile No" required>

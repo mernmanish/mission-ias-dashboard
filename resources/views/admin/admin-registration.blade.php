@@ -30,9 +30,7 @@
 								<th>Image</th>
 								<th>Full Name</th>
 								<th>Mobile No</th>
-								<th>State</th>
-								<th>District</th>
-								<th>City</th>
+								<th>User Type</th>
 								<th>Pin Code</th>
 								<th>Status</th>
 								<th>Change Status</th>
@@ -48,9 +46,11 @@
 								<td><img src="{{ Storage::url($rows['image']) }}" alt="" style="height: 35px;"></td>
 								<td>{{ $rows['name'] }}</td>
 								<td>{{ $rows['mobile'] }}</td>
-								<td>{{ empty($rows->state->name) ? " " :$rows->state->name }}</td>
-								<td>{{ empty($rows->dist->name) ? " " : $rows->dist->name }}</td>
-								<td>{{ empty($rows->city->name) ? " " : $rows->city->name }}</td>
+                                @if($rows['user_type']=="super_admin")
+								<td><span class="badge badge-info">Super Admin</span></td>
+                                @else
+                                <td><span class="badge badge-dark">Admin</span></td>
+                                @endif
 								<td>{{ $rows['pin_code'] }}</td>
 								<td>@php if ($rows['status']=="1"){ echo '<span class="badge badge-success">Active</span>'; } else { echo '<span class="badge badge-danger">Inactive</span>'; } @endphp </td>
 								<td>
@@ -69,7 +69,7 @@
 											<div class="dropdown-menu dropdown-menu-right">
 												<a href="{!! url('edit-admin').'/'.$rows['id'] !!}" class="dropdown-item"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
 												<button id="{{ $rows['id'] }}" class="dropdown-item" onclick="deleteadmin(this.id)"><i class="fa fa-trash-o" aria-hidden="true"></i> Delete</</button>
-												
+
 											</div>
 										</div>
 									</div>
@@ -98,7 +98,7 @@
 		{
 			var d="Inactive";
 		}
-		if(confirm("Are you Sure "+d+" the City status ?")){
+		if(confirm("Are you Sure "+d+" the  status ?")){
 			 $.ajaxSetup({
               headers: {
                   'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -112,9 +112,14 @@
 				success:function(data){
 			    //alert(data);
 				$('.table').load(window.location + ' .table');
-				$('.alert').show().addClass('alert-primary').text("City Status has been "+d+" Successfully");
-				$('.alert').fadeOut(6000);
-		  }  
+				swal({
+                title: "Success !",
+                text: "Status has been "+d+" Successfully",
+                icon: "success",
+                button: "OK",
+                timer: 3000
+           });
+		  }
 	    });
 	  }
 	}
@@ -130,12 +135,17 @@
 				// data: {"id":id},
 				success:function(data)
 				{
-					
+
 					if(data.success)
 					{
 						$('.table').load(location.href + " .table");
-						$('.alert').show().addClass('alert-danger').text("Data Deleted Successfully");
-						$('.alert').fadeOut(3000);
+						swal({
+                                title: "Success !",
+                                text: "Data deleted successfully",
+                                icon: "success",
+                                button: "OK",
+                                timer: 3000
+                        });
 					}
 					else
 					{

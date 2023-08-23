@@ -44,6 +44,14 @@
 						<input type="text" class="form-control" id="email" name="email" placeholder="Enter Remarks" value="{{ $row['email'] }}">
                         <span id="emailError" style="color: red;"></span>
 					</div>
+                    <div class="form-group col-md-3">
+                        <label for="user_type">User Type</label>
+                        <select name="user_type" id="user_type" class="form-control" style="padding: 7px;">
+                            <option value="">Select User Type</option>
+                            <option value="super_admin" {!! $row['user_type']=="super_admin" ? "selected" : '' !!}>Super Admin</option>
+                            <option value="admin" {!! $row['user_type']=="admin" ? "selected" : '' !!}>Admin</option>
+                        </select>
+                    </div>
 					<div class="form-group col-md-3">
 						<label for="gender">Gender</label>
 						<select name="gender" id="gender" class="form-control" style="padding: 7px;">
@@ -53,33 +61,7 @@
 							<option value="Others" {!! $row['gender']=="Others" ? "selected" : '' !!}>Others</option>
 						</select>
 					</div>
-					<div class="form-group col-md-3">
-						<label for="state_id">State</label>
-						<select name="state_id" id="state_id" class="form-control" style="padding: 7px;">
-							<option value="">Select State</option>
-                            @foreach (App\Models\State::where('status','1')->orderBy('name','asc')->get() as $rows)
-							<option value="{{ $rows['id'] }}" {!! $row['state_id']==$rows['id'] ? "selected" : '' !!}>{{ $rows['name'] }}</option>
-                           @endforeach
-						</select>
-					</div>
-					<div class="form-group col-md-3">
-                        <label for="dist_id">District</label>
-                        <select name="dist_id" id="dist_id" class="form-control" style="padding: 7px;">
-                            <option value="">Select District</option>
-                            @foreach (App\Models\District::where(['status'=>'1','state_id'=>$row['state_id']])->orderBy('name','asc')->get() as $rows)
-                               <option value="{{ $rows['id'] }}" {!! $row['dist_id']==$rows['id'] ? "selected" : '' !!}>{{ $rows['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-					<div class="form-group col-md-3">
-						<label for="city_id">City</label>
-						<select name="city_id" id="city_id" class="form-control" style="padding: 7px;">
-                            <option value="">Select City</option>
-                            @foreach(App\Models\City::where(['status'=>'1','dist_id'=>$row['dist_id']])->orderBy('name','asc')->get() as $rows)
-                            <option value="{{ $rows['id'] }}" {!! $row['city_id']==$rows['id'] ? "selected" : '' !!}>{{ $rows['name'] }}</option>
-                            @endforeach
-                        </select>
-					</div>
+
 					<div class="form-group col-md-3">
 						<label for="pin_code">Pin Code</label>
 						<input type="text" class="form-control" id="pin_code" name="pin_code" placeholder="Enter Pin Code" value="{{ $row['pin_code'] }}">
@@ -129,6 +111,14 @@
                         <span id="emailError" style="color: red;"></span>
                     </div>
                     <div class="form-group col-md-3">
+                        <label for="user_type">User Type</label>
+                        <select name="user_type" id="user_type" class="form-control" style="padding: 7px;">
+                            <option value="">Select User Type</option>
+                            <option value="super_admin">Super Admin</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-3">
                         <label for="gender">Gender</label>
                         <select name="gender" id="gender" class="form-control" style="padding: 7px;">
                             <option value="">Select Gender</option>
@@ -137,33 +127,8 @@
                             <option value="Others">Others</option>
                         </select>
                     </div>
-                    <div class="form-group col-md-3">
-                        <label for="state_id">State</label>
-                        <select name="state_id" id="state_id" class="form-control" style="padding: 7px;">
-                            <option value="">Select State</option>
-                            @foreach (App\Models\State::where('status','1')->orderBy('name','asc')->get() as $rows)
-                            <option value="{{ $rows['id'] }}">{{ $rows['name'] }}</option>
-                           @endforeach
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="dist_id">District</label>
-                        <select name="dist_id" id="dist_id" class="form-control" style="padding: 7px;">
-                            <option value="">Select District</option>
 
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="city_id">City</label>
-                        <select name="city_id" id="city_id" class="form-control" style="padding: 7px;">
-                            <option value="">Select City</option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-3">
-                        <label for="pin_code">Pin Code</label>
-                        <input type="text" class="form-control" id="pin_code" name="pin_code" placeholder="Enter Pin Code">
-                    </div>
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-9">
                         <label for="full_address">Full Address</label>
                         <input type="text" name="full_address" id="full_address" class="form-control" placeholder="Enter Full Address">
                     </div>
@@ -176,6 +141,10 @@
                             </div>
                         </div>
                         <span id="imageError" style="color: red;"></span>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="pin_code">Pin Code</label>
+                        <input type="text" class="form-control" id="pin_code" name="pin_code" placeholder="Enter Pin Code">
                     </div>
                     <div class="form-group col-md-3">
                         <label for="password">Password</label>
@@ -341,8 +310,13 @@
                 if (data.success) {
                   if (data.status=="added") {
                   $('.table').load(location.href + " .table");
-               $('.alert').show().addClass('alert-primary').text("Data Added Successfully");
-                $('.alert').fadeOut(6000);
+                  swal({
+                            title: "Success !",
+                            text: "Data Added Successfully",
+                            icon: "success",
+                            button: "OK",
+                            timer: 3000
+                });
                 $('#adminform').trigger('reset');
              }
              else if (data.status=='avail') {
@@ -352,8 +326,13 @@
 
              else{
                  $('.table').load(location.href + " .table");
-                $('.alert').show().addClass('alert-success').text("Data Upadated Successfully");
-                $('.alert').fadeOut(6000);
+                 swal({
+                    title: "Success !",
+                    text: "Data Updated Successfully",
+                    icon: "success",
+                    button: "OK",
+                    timer: 3000
+                });
                 $('#adminform').trigger('reset');
                  $('#adminform .btn-primary').text("Submit Details");
               }
