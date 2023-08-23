@@ -328,7 +328,7 @@
                                         class="fa fa-list" aria-hidden="true"></i>Add Book</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item nav-item-submenu">
+                        {{-- <li class="nav-item nav-item-submenu">
                             <a href="#" class="nav-link"><i class="icon-file-download2"></i> <span> Study Material
                                     </span></a>
                             <ul class="nav nav-group-sub" data-submenu-title="Layouts">
@@ -337,7 +337,7 @@
                                 <li class="nav-item"><a href="{{ url('add-study-material') }}" class="nav-link"><i
                                         class="fa fa-list" aria-hidden="true"></i>Add Study Material</a></li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="nav-item nav-item-submenu">
                             <a href="#" class="nav-link"><i class="icon-newspaper2"></i> <span> Live Events
                                     </span></a>

@@ -42,6 +42,7 @@
 								<th>Course Name</th>
 								<th>Amount</th>
                                 <th>Payment Date</th>
+                                <th>Payment Mode</th>
                                 <th>Payment Status</th>
 							</tr>
 						</thead>
@@ -56,6 +57,7 @@
 								<td>{{ $rows->course->name ?? 'N/A' }}</td>
 								<td>{{ $rows->amount ?? '' }}</td>
                                 <td>{{ date('d-F-Y',strtotime($rows->created_at)) ?? '' }}</td>
+                                <td>{{ucwords($rows->payment_mode)}}</td>
                                 <td>
                                     @if($rows->payment_status=="pending")
                                     <span class="badge rounded-pill bg-warning">Pending</span>

@@ -16,6 +16,7 @@ class OnlinePayment extends Model
         'email',
         'message',
         'payment_id',
+        'payment_mode',
         'payment_status',
     ];
 }

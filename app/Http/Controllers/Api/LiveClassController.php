@@ -17,8 +17,9 @@ class LiveClassController extends Controller
 {
     public function liveClassList()
     {
+        $currentDate = Carbon::now()->toDateString();
         $currentDateTime = now();
-        $data = LiveClass::whereDate('expiry_date','>', $currentDateTime)->where('status','1')->get();
+        $data = LiveClass::whereDate('created_at','=', $currentDate)->where('status','1')->get();
         $response = [
             'status'=> 'success',
             'data' => $data

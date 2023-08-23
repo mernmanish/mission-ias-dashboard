@@ -13,6 +13,7 @@ class UserPayment extends Model
         'user_id',
         'course_id',
         'amount',
+        'payment_mode',
         'payment_status'
     ];
     public function course(){

@@ -160,6 +160,13 @@ class AssignCourseController extends Controller
             ];
             $userData = User::where('id',$request->user_id)->latest()->first();
             $courseData = Course::where('id',$request->course_id)->latest()->first();
+            $userPayment = UserPayment::create([
+                'user_id' => $request->user_id,
+                'course_id' => $request->course_id,
+                'amount' => $request->course_fee,
+                'payment_mode' => 'offline',
+                'payment_status' => 'paid'
+            ]);
             //dd($data);
             if($request->id=="")
             {
@@ -370,7 +377,7 @@ class AssignCourseController extends Controller
 
     public function onlinePayment()
     {
-        $all = UserPayment::get();
+        $all = UserPayment::orderBy('id','desc')->get();
         return view('admin.assign-course.payment-history',['payment' => $all]);
     }
 
