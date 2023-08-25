@@ -74,7 +74,7 @@ Route::middleware('auth:api')->post('/test-submit-list',[TestSeriesController::c
 Route::middleware('auth:api')->post('/test-stats',[TestSeriesController::class,'testStats']);
 
 Route::middleware('auth:api')->post('/create-chat',[ChatController::class,'createChat']);
-Route::middleware('auth:api')->get('/chat-list/{id}',[ChatController::class,'chatList']);
+Route::middleware('auth:api')->post('/chat-list',[ChatController::class,'chatList']);
 Route::middleware('auth:api')->post('/chat-reply-list',[ChatController::class,'chatReplyList']);
 
 

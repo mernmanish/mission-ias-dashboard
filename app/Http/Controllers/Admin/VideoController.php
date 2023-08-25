@@ -189,19 +189,19 @@ class VideoController extends Controller
         return response()->json($data);
     }
 
-    public function addReplyChat(Request $request)
-    {
-        $chatData = VideoChat::where('id',$request->chat_id)->latest()->first();
-        $data = [
-            'message' => $request->message,
-            'chat_id' => $request->chat_id,
-            'user_id' => $chatData->user_id,
-            'video_id' => $chatData->video_id,
-            'sender_id' =>session('sessionadmin')['id']
-        ];
-        $video = VideoChatReply::create($data);
-        return redirect()->back()->with('message','Message Reply successfully !');
-    }
+    // public function addReplyChat(Request $request)
+    // {
+    //     $chatData = VideoChat::where('id',$request->chat_id)->latest()->first();
+    //     $data = [
+    //         'message' => $request->message,
+    //         'chat_id' => $request->chat_id,
+    //         'user_id' => $chatData->user_id,
+    //         'video_id' => $chatData->video_id,
+    //         'sender_id' =>session('sessionadmin')['id']
+    //     ];
+    //     $video = VideoChatReply::create($data);
+    //     return redirect()->back()->with('message','Message Reply successfully !');
+    // }
 
 
 }

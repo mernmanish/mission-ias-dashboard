@@ -13,13 +13,9 @@
    });
 </script>
 @endif
-<div class="mb-3">
-	<h4 class="mb-0 font-weight-semibold">
-		<i class="fa fa-angle-double-right" aria-hidden="true"></i> List of Video Chat
-    </h4>
-</div>
+
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-8 offset-md-2">
 		<div class="card">
 			<div class="card-header header-elements-inline bg-dark">
 				<h5 class="card-title"><i class="fa fa-list" aria-hidden="true"></i> List of All Video Chat</h5>
@@ -31,39 +27,32 @@
                 	</div>
             	</div>
 			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="table-responsive">
-						<table class="table table-bordered table-hover" id="table">
-						<thead class="bg-teal-400">
-							<tr>
-								<th>#</th>
-								<th>User Name</th>
-                                <th>Mobile</th>
-								<th>Message</th>
-								<th class="text-center">Action</th>
-							</tr>
-						</thead>
-                        <tbody>
-                            @php $i =1; @endphp
-                            @foreach($videoChat as $rows)
-                            <tr>
-                                <th>{{$i++}}</th>
-                                <td>{{$rows->user->name ?? ''}}</td>
-                                <td>{{$rows->user->mobile ?? ''}}</td>
-                                <td>{{$rows->message ?? ''}}</td>
-                                <td><button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#exampleModal" id="{{$rows->id}}" onclick="openmodal(this.id,'{{$rows->user_id}}')" style="font-size:14px;"><i class="fa fa-commenting" aria-hidden="true"></i></button></td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-					  </table>
-					</div>
+			<div class="card-body" style="height: 600px; width: 100%;overflow-y: scroll;">
+				<div class="row" id="refreshedContent">
+                    {{-- @foreach($videoChat as $rows)
+                    <div class="col-md-12">
+                        <p style="font-size: 20px; font-weight:bold;"><i class="fa fa-user-circle-o"></i> {{$rows->user->name ?? 'Mission (Admin)'}}</p>
+                        <p style="font-size: 16px;">{{$rows->message;}}</p>
+                    </div>
+                    @endforeach --}}
 				</div>
 			</div>
+            <div class="card-footer">
+                <form action="{{route('add-reply-chat')}}" method="post" enctype="multipart/form-data">
+                {{ csrf_field() }}
+                    <div class="input-group mb-3">
+                        <input type="hidden" name="video_id" id="video_id" value="{{$id}}" />
+                        <input type="text" class="form-control" name="message" id="message" required placeholder="Type Message..." aria-label="Type Message..." aria-describedby="basic-addon2">
+                        <div class="input-group-append" style="margin-left: 0rem;">
+                        <button class="btn btn-sm bg-teal-400"  type="submit">Send</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 		</div>
 	</div>
 </div>
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -95,10 +84,23 @@
         </form>
       </div>
     </div>
-</div>
+</div> --}}
 @endsection
 @push('footscript')
+<script>
+    function refreshContent() {
+        $.ajax({
+            url:'{{ url('liveChatView') }}' + '/' + 23, // Replace with the URL of your data source
+            success: function(data) {
+                $('#refreshedContent').html(data); // Replace #refreshedContent with the ID of the element you want to refresh
+            }
+        });
+    }
 
+    $(document).ready(function() {
+        setInterval(refreshContent, 2000); // Refresh every 5 seconds (5000 milliseconds)
+    });
+</script>
 <script type="text/javascript">
     function openmodal(id)
     {

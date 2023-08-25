@@ -267,7 +267,42 @@ class LiveClassController extends Controller
 
     public function chatList($id)
     {
-        $videoChat = VideoChat::where('video_id',$id)->get();
-        return view('admin.live-class.chat-list',['videoChat' => $videoChat]);
+        $videoChat = VideoChat::where('video_id',$id)->orderBy('id','desc')->get();
+        return view('admin.live-class.chat-list',['videoChat' => $videoChat,'id' => $id]);
+    }
+
+    public function liveChatView($id)
+    {
+        $videoChat = VideoChat::where('video_id',$id)->orderBy('id','asc')->get();
+        $data = '';
+        foreach($videoChat as $rows)
+        {
+            if(!empty($rows->user_id))
+            {
+            $data .='<div class="col-md-12">
+            <p style="font-size: 15px; font-weight:bold;"><i class="fa fa-user-circle-o"></i> '.$rows->user->name.'</p>
+            <p style="font-size: 18px;">'.$rows->message.'</p>
+            </div>';
+            }
+            else{
+                $data .='<div class="col-md-12"  style="text-align: right;">
+            <p style="font-size: 15px; font-weight:bold;"><i class="fa fa-user-circle-o"></i> Mission (Admin)</p>
+            <p style="font-size: 18px;">'.$rows->message.'</p>
+            </div>';
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function addReplyChat(Request $request)
+    {
+        // $chatData = VideoChat::where('id',$request->chat_id)->latest()->first();
+        $data = [
+            'video_id' => $request->video_id,
+            'message' => $request->message,
+        ];
+        $video = VideoChat::create($data);
+        return redirect()->back();
     }
 }

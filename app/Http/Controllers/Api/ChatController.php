@@ -9,6 +9,7 @@ use App\Models\VideoChat;
 use App\Models\VideoChatReply;
 use Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ChatController extends Controller
 {
@@ -42,16 +43,31 @@ class ChatController extends Controller
         }
     }
 
-    public function chatList($id)
+    public function chatList(Request $request)
     {
+        $validator=Validator::make($request->all(),
+        [
+            'video_id'=>'required'
+        ]);
+        if($validator->fails())
+        {
+            return response()->json($validator->errors(),202);
+        }
         try{
-            if($id==0)
-            {
-            $data = VideoChat::where('status','1')->get();
-            }
-            else{
-                $data = VideoChat::where('id',$id)->where('status','1')->get();
-            }
+            $video_id = $request->video_id;
+            $data = DB::table('video_chats')
+            ->leftJoin('users', 'video_chats.user_id', '=', 'users.id')
+            ->select('video_chats.*', DB::raw('COALESCE(users.name, "Admin") as username'))
+            ->get();
+            // $data = VideoChat::where('video_id',$video_id)->orderBy('id','asc')->get();
+            // foreach($data as $rows)
+            // {
+            //     $response = [
+            //         'status'=> 'success',
+            //         'data' => $rows
+            //     ];
+            //     return response()->json($response,200);
+            // }
             $response = [
                 'status'=> 'success',
                 'data' => $data

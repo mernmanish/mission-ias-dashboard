@@ -9,6 +9,7 @@ class Course extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'id',
         'name',
         'course_type_id',
         'image',
@@ -22,5 +23,9 @@ class Course extends Model
     ];
     public function courseType(){
         return $this->hasOne(CourseType::class,'id','course_type_id');
+    }
+    public function assignedStudents()
+    {
+        return $this->hasMany(AssignCourse::class, 'course_id');
     }
 }

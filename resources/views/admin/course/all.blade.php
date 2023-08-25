@@ -44,6 +44,7 @@
 									<th>Duration</th>
                                     <th>Fee</th>
                                     <th>Discount Fee</th>
+                                    <th>No of Students</th>
 									<th>Status</th>
 									<th>Action</th>
 								</tr>
@@ -61,7 +62,7 @@
 
 									<td>{{ $rows['course_fee'] }}</td>
 									<td>{{ $rows['discount_fee'] }}</td>
-
+                                    <td>{{$rows->assignedStudents->count()}}</td>
 									<td>
                                         @if($rows->status==1)
                                         <span class="badge rounded-pill bg-success">Active</span>
