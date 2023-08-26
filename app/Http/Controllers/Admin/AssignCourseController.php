@@ -28,7 +28,7 @@ class AssignCourseController extends Controller
             $data = AssignCourse::select('*')->orderBy('id','desc');
             return Datatables::of($data)
                 ->addIndexColumn()
-                  ->rawColumns(['status','action','user_name'])
+                  ->rawColumns(['status','action','user_name','payment_mode'])
                   ->addColumn('status', function ($row) {
                     $btn = '';
                     if ($row->status == 'active') {
@@ -81,6 +81,19 @@ class AssignCourseController extends Controller
                     $join = date('d-M-Y',strtotime($row->expire_date));
                     return $join;
                 })
+                ->addColumn('payment_mode', function ($row) {
+                    $payment = '';
+                    if ($row->payment_mode == 'online') {
+                        $payment .= '<span class="badge rounded-pill bg-info">Online</span>';
+                    }else {
+                        $payment .= '<span class="badge rounded-pill bg-dark">Offline</span>';
+                    }
+                    return $payment;
+                })
+                // ->addColumn('paymentMode', function ($row) {
+                //     $mode = $row->payment_mode ?? 'offline';
+                //     return $mode;
+                // })
                 //->rawColumns(['action'])
                 ->make(true);
         }
@@ -156,6 +169,7 @@ class AssignCourseController extends Controller
                 'amount' => $request->course_fee,
                 'join_date' => $join_date,
                 'expire_date' => $expire_date,
+                'payment_mode' => 'offline',
                 'remarks' => $request->remarks
             ];
             $userData = User::where('id',$request->user_id)->latest()->first();
@@ -271,7 +285,8 @@ class AssignCourseController extends Controller
                     'course_id' => $course->id ?? '',
                     'amount' => $assign[2] ?? '',
                     'join_date' => $join_date ?? '',
-                    'expire_date'=> $expire_date ?? ''
+                    'expire_date'=> $expire_date ?? '',
+                    'payment_mode' => 'offline'
                 ]
             );
                 array_push($imported_items, $item);

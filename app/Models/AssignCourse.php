@@ -16,6 +16,7 @@ class AssignCourse extends Model
         'amount',
         'join_date',
         'expire_date',
+        'payment_mode',
         'status',
         'remarks'
     ];
@@ -25,4 +26,8 @@ class AssignCourse extends Model
     public function user(){
         return $this->hasOne(User::class,'id','user_id');
     }
+    // public function userPayment()
+    // {
+    //     return $this->hasMany(UserPayment::class, 'course_id');
+    // }
 }

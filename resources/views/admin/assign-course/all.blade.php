@@ -47,6 +47,7 @@
 								<th>Mobile</th>
 								<th>Course Name</th>
 								<th>Fee</th>
+                                <th>Payment Mode</th>
 								<th>Join Date</th>
 								<th>Expiry Date</th>
 								<th>Status</th>
@@ -199,6 +200,7 @@
             {data: 'mobile', name: 'mobile',sortable: true, searchable: true},
             {data: 'userCourse', name: 'userCourse'},
             {data: 'amount', name: 'amount'},
+            {data: 'payment_mode', name: 'payment_mode'},
             {data: 'joinDate', name: 'joinDate'},
             {data: 'expiryDate', name: 'expiryDate'},
             {data: 'status', name: 'status',},
