@@ -58,6 +58,7 @@ class ChatController extends Controller
             $data = DB::table('video_chats')
             ->leftJoin('users', 'video_chats.user_id', '=', 'users.id')
             ->select('video_chats.*', DB::raw('COALESCE(users.name, "Admin") as username'))
+            ->where('video_chats.video_id',$video_id)
             ->get();
             // $data = VideoChat::where('video_id',$video_id)->orderBy('id','asc')->get();
             // foreach($data as $rows)
