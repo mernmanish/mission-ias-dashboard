@@ -67,7 +67,7 @@
                         </span>
                         @endif
                     </div>
-                    <div class="form-group col-md-4">
+                    {{-- <div class="form-group col-md-4">
                         <label for="price">Price <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" placeholder="Enter Price" id="price" name="price" onkeypress="if(this.value.length==4) return false;" onkeydown="return event.keyCode !== 69" value="{{$test->price}}">
                         @if ($errors->has('price'))
@@ -75,7 +75,7 @@
                         {{ $errors->first('price') }}
                         </span>
                         @endif
-                    </div>
+                    </div> --}}
                     <div class="form-group col-md-4">
                         <label for="time">Time <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" placeholder="Enter Test Time in Minutes" id="time" name="time" onkeypress="if(this.value.length==3) return false;" onkeydown="return event.keyCode !== 69" value="{{$test->time}}">

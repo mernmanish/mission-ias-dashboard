@@ -65,7 +65,7 @@ class TestSeriesController extends Controller
             'subcategory_id' => $request->subcategory_id,
             // 'dish_type' => $request->dish_type,
             'test_series_name' => $request->test_series_name,
-            'price' => $request->price,
+            // 'price' => $request->price,
             'time' =>  $request->time,
             'post_by' => $request->post_by,
             'test_category' => $test_category,
@@ -102,7 +102,7 @@ class TestSeriesController extends Controller
             'subcategory_id' => 'required',
             'description' => 'required',
             'test_series_name' => 'required|string|max:255',
-            'price' => 'required',
+            // 'price' => 'required',
             'time' => 'required',
             'image_link' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:1024'],
             'post_by' => 'required'

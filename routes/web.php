@@ -86,6 +86,8 @@ Route::post('/manageadmin', [Auth::class, 'store']);
 Route::get('/admindelete/{id}', [Auth::class, 'destroy']);
 Route::get('/edit-admin/{id}', [Auth::class, 'edit']);
 Route::post('/changeadmindata', [Auth::class,'changeadmindata']);
+Route::get('/changeAdminPassword', [Auth::class,'changeAdminPassword']);
+Route::post('/change-admin-password', [Auth::class,'changeUsersPassword'])->name('change-admin-password');
 Route::post('/managestate', [Location_master::class, 'store']);
 Route::get('/statedelete/{id}', [Location_master::class, 'destroy']);
 Route::post('/changestate', [Location_master::class, 'changestatus']);

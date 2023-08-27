@@ -410,7 +410,14 @@ class AssignCourseController extends Controller
                 <td>'.$i++.'</td>
                 <td>'.$rows->user->name.'</td>
                 <td>'.$rows->mobile.'</td>
-                <td>'.$rows->course->name.'</td>
+                <td>'.$rows->course->name.'</td>';
+                if ($rows->payment_mode == 'online') {
+                    $output .= '<td><span class="badge rounded-pill bg-info">Online</span></td>';
+                }else {
+                    $output .= '<td><span class="badge rounded-pill bg-dark">Offline</span></td>';
+                }
+                $output .='<td>'.date('d-M-Y',strtotime($rows->join_date)).'</td>
+               <td><a style=" background-color: #cb2316;color: white;" class="btn btn-sm" data-href="'.url("delete-assign-course/$rows->id").'" onclick="deleteItem(this)"><i class="fa fa-trash-o" aria-hidden="true"></i> </</a></td>
             </tr>';
             }
         }

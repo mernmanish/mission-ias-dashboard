@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\State;
 use App\Models\District;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 /*use Illuminate\Auth\Middleware\TestSession;*/
 class Auth extends Controller
 {
@@ -17,9 +18,32 @@ class Auth extends Controller
     }*/
     public function index()
     {
-
         return view('admin.login');
     }
+    public function changeAdminPassword()
+    {
+        return view('admin.users.change-password');
+    }
+
+    public function changeUsersPassword(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $data = [
+            'password' => Hash::make($request->password_confirmation)
+        ];
+        Admin::where('mobile',$request->mobile)->update($data);
+        return redirect()->back()->with('message','Change Password Successfully.');
+    }
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'mobile'=>'required|string|max:100',
+            'password'=>'required|min:6|confirmed',
+            'password_confirmation' => 'required_with:password|same:password|min:6'
+        ]);
+
+    }
+
     public function admin_registration()
     {
         $data = Admin::all();
@@ -54,7 +78,7 @@ class Auth extends Controller
        // $request->session()->forget('sessionadmin');
         $request->session()->flush();
         /*Session::flush();*/
-        return view('admin.login');
+        return redirect('admin');
 
     }
 
