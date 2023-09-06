@@ -72,7 +72,7 @@
                         <div class="heading">
                             <h3>Contact Us</h3>
                             <p>
-                                Occasional terminated insensible and inhabiting gay. So know do fond to half on. Now who promise was justice new winding
+                                If you have any questions or queries, please fill out the form and drop us an email.
                             </p>
                         </div>
                         <form action="https://validthemes.live/themeforest/examin/assets/mail/contact.php" method="POST" class="contact-form">

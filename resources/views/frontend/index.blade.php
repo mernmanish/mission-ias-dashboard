@@ -159,9 +159,9 @@
                 <div class="col-md-6 content">
                     <div class="site-heading text-left">
                         <h2>Why chose us</h2>
-                        <p>
+                        {{-- <p>
                             Discourse assurance estimable applauded to so. Him everything melancholy uncommonly but solicitude inhabiting projection off. Connection stimulated estimating excellence an to impression.
-                        </p>
+                        </p> --}}
                     </div>
 
                     <!-- item -->
@@ -174,7 +174,7 @@
                                 <a href="#">Trending Courses</a>
                             </h4>
                             <p>
-                                Absolute required of reserved in offering no. How sense found our those gay again taken the. Had mrs outweigh desirous sex overcame. Improved property reserved disposal do offering me.
+                                We offer the best courses for all competitive examinations, such as UPSC, BPSC, STET, and other government examinations, at affordable prices with the highest quality.
                             </p>
                         </div>
                     </div>
@@ -190,7 +190,7 @@
                                 <a href="#">Books & Library</a>
                             </h4>
                             <p>
-                                Absolute required of reserved in offering no. How sense found our those gay again taken the. Had mrs outweigh desirous sex overcame. Improved property reserved disposal do offering me.
+                                We provide daily practice papers and question sets to students to enhance their performance in the actual examinations. We assist in all-around development.
                             </p>
                         </div>
                     </div>
@@ -206,7 +206,7 @@
                                 <a href="#">Certified Teachers</a>
                             </h4>
                             <p>
-                                Absolute required of reserved in offering no. How sense found our those gay again taken the. Had mrs outweigh desirous sex overcame. Improved property reserved disposal do offering me.
+                                We have the best faculty, and our teachers are well-educated and qualified. They will provide you with quality education, better understanding, and overall personal development.
                             </p>
                         </div>
                     </div>
@@ -462,7 +462,7 @@
                         <div class="site-heading text-left">
                             <h2>Get a Free online Registration</h2>
                             <p>
-                                written on charmed justice is amiable farther besides. Law insensible middletons unsatiable for apartments boy delightful unreserved.
+                                If you have any questions or queries, please fill out the form and drop us an email.
                             </p>
                         </div>
                         <form action="#">
@@ -482,7 +482,7 @@
                                         <input class="form-control" placeholder="Email*" type="email">
                                     </div>
                                 </div>
-                                <div class="col-md-12">
+                                {{-- <div class="col-md-12">
                                     <div class="form-group">
                                         <select>
                                             <option value="1">Chose Subject</option>
@@ -492,7 +492,7 @@
                                             <option value="6">Machine Language</option>
                                         </select>
                                     </div>
-                                </div>
+                                </div> --}}
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input class="form-control" placeholder="Phone" type="text">
@@ -500,7 +500,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <button type="submit" style="background-color: #0f0e0e; color:#ffffff">
-                                        Rigister Now
+                                        Send Message
                                     </button>
                                 </div>
                             </div>
@@ -536,37 +536,14 @@
                                 <img src="{{asset('assets/images/male-student.png')}}" alt="Thumb">
                             </div>
                             <div class="col-md-7 info">
-                                <p>
-                                    Procuring continued suspicion its ten. Pursuit brother are had fifteen distant has. Early had add equal china quiet visit. Appear an manner as no limits either praise..
+                                <p style="text-align: justify">
+                                    Mission 50 IAS is one of the best institutes if you aspire to become a government officer. Everyone at the coaching center, including the staff, helped me a lot. The DPP and the mock tests were very useful. The guidance from the teachers was also top-notch.
                                 </p>
                                 <h4>Ranjan kumar</h4>
                                 <span>BPSC 65th</span>
                             </div>
                         </div>
-                        <div class="item">
-                            <div class="col-md-5 thumb">
-                                <img src="{{asset('assets/images/male-student.png')}}" alt="Thumb">
-                            </div>
-                            <div class="col-md-7 info">
-                                <p>
-                                    Procuring continued suspicion its ten. Pursuit brother are had fifteen distant has. Early had add equal china quiet visit. Appear an manner as no limits either praise..
-                                </p>
-                                <h4>Ranjan kumar</h4>
-                                <span>BPSC 65th</span>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="col-md-5 thumb">
-                                <img src="{{asset('assets/images/male-student.png')}}" alt="Thumb">
-                            </div>
-                            <div class="col-md-7 info">
-                                <p>
-                                    Procuring continued suspicion its ten. Pursuit brother are had fifteen distant has. Early had add equal china quiet visit. Appear an manner as no limits either praise..
-                                </p>
-                                <h4>Ranjan kumar</h4>
-                                <span>BPSC 65th</span>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
