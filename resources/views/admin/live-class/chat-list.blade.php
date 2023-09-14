@@ -90,7 +90,7 @@
 <script>
     function refreshContent() {
         $.ajax({
-            url:'{{ url('liveChatView') }}' + '/' + 23, // Replace with the URL of your data source
+            url:'{{ url('liveChatView') }}' + '/' + {{$id}}, // Replace with the URL of your data source
             success: function(data) {
                 $('#refreshedContent').html(data); // Replace #refreshedContent with the ID of the element you want to refresh
             }

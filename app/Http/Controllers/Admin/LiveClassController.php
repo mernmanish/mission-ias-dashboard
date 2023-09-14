@@ -121,7 +121,7 @@ class LiveClassController extends Controller
             }
         else
         {
-            $video = LiveClass::where('id',$request->id)->update($data);
+            $video = LiveClass::where('id',$request->id)->update($liveData);
             return redirect('all-live-class')->with('message','Live Class Updated successfully.');
         }
     }
