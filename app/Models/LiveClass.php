@@ -17,6 +17,7 @@ class LiveClass extends Model
         'source_type',
         'image_link',
         'access',
+        'live_user',
         'status',
         'expiry_date'
     ];

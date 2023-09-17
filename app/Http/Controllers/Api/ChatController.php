@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Models\VideoChat;
-use App\Models\VideoChatReply;
 use Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\VideoChat;
+use App\Models\VideoChatReply;
+use App\Models\LiveClass;
+
+
 
 class ChatController extends Controller
 {
@@ -96,6 +99,46 @@ class ChatController extends Controller
             $response = [
                 'status'=> 'success',
                 'data' => $data
+            ];
+            return response()->json($response,200);
+        }
+        catch(\Exception $e)
+        {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function liveUser(Request $request)
+    {
+        try{
+            $validator=Validator::make($request->all(),[
+                'video_id'=>'required',
+                'type'=>'required'
+            ]);
+
+            if($validator->fails())
+            {
+                return response()->json($validator->errors(),202);
+            }
+            $live = LiveClass::where('id',$request->video_id)->latest()->first();
+            $prevLive = $live->live_user;
+            if($request->type=="online")
+            {
+                $currentCount = $prevLive + 1;
+                $data = [
+                    'live_user' => $currentCount
+                ];
+                $updateLive = LiveClass::where('id',$request->video_id)->update($data);
+            }
+            else{
+                $currentCount = $prevLive - 1;
+                $data = [
+                    'live_user' => $currentCount
+                ];
+                $updateLive = LiveClass::where('id',$request->video_id)->update($data);
+            }
+            $response = [
+                'status'=> 'success'
             ];
             return response()->json($response,200);
         }
