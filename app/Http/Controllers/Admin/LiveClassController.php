@@ -295,6 +295,13 @@ class LiveClassController extends Controller
         return response()->json($data);
     }
 
+    public function liveStudentCount($id)
+    {
+        $liveCount = LiveClass::find($id);
+        $data = $liveCount->live_user;
+        return response()->json($data);
+    }
+
     public function addReplyChat(Request $request)
     {
         // $chatData = VideoChat::where('id',$request->chat_id)->latest()->first();

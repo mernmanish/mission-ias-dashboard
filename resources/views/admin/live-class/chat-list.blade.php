@@ -18,12 +18,10 @@
 	<div class="col-md-8 offset-md-2">
 		<div class="card">
 			<div class="card-header header-elements-inline bg-dark">
-				<h5 class="card-title"><i class="fa fa-list" aria-hidden="true"></i> List of All Video Chat</h5>
+				<h5 class="card-title"><i class="fa fa-list" aria-hidden="true"></i> List of All Video Chat </h5>
 				<div class="header-elements">
 					<div class="list-icons">
-                		<a class="list-icons-item" data-action="collapse"></a>
-                		<a class="list-icons-item" data-action="reload"></a>
-                		<a class="list-icons-item" data-action="remove"></a>
+                		<a>Total Live Student: <span class="totalCountLive">0</span></a>
                 	</div>
             	</div>
 			</div>
@@ -87,6 +85,20 @@
 </div> --}}
 @endsection
 @push('footscript')
+<script>
+    function refreshCountContent() {
+        $.ajax({
+            url:'{{ url('liveStudentCount') }}' + '/' + {{$id}}, // Replace with the URL of your data source
+            success: function(data) {
+                $('.totalCountLive').html(data); // Replace #refreshedContent with the ID of the element you want to refresh
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        setInterval(refreshCountContent, 2000); // Refresh every 2 seconds (2000 milliseconds)
+    });
+</script>
 <script>
     function refreshContent() {
         $.ajax({

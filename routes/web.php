@@ -155,6 +155,7 @@ Route::get('/delete-live-class/{id}',[LiveClassController::class,'destroy']);
 Route::get('/edit-live-class/{id}',[LiveClassController::class,'edit']);
 Route::get('/chat-list/{id}',[LiveClassController::class,'chatList']);
 Route::get('/liveChatView/{id}',[LiveClassController::class,'liveChatView']);
+Route::get('/liveStudentCount/{id}',[LiveClassController::class,'liveStudentCount']);
 Route::post('/add-reply-chat',[LiveClassController::class,'addReplyChat'])->name('add-reply-chat');
 
 Route::get('/all-books',[BookController::class,'index'])->name('all-books');
