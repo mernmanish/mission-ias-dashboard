@@ -140,8 +140,8 @@ class CourseController extends Controller
                 $months = $numbers[0];
                 $expire_date = date('Y-m-d', strtotime($join_date . ' + ' . $months . ' months'));
                 $assignData = [
-                    'user_id' => Auth::user()->id,
-                    'mobile' => Auth::user()->mobile,
+                    'user_id' => $request->user_id,
+                    'mobile' => $request->mobile,
                     'course_id' => $prevPayment->course_id,
                     'amount' => $courseDetails->course_fee,
                     'join_date' => $join_date,
