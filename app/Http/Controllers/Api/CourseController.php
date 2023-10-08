@@ -85,6 +85,7 @@ class CourseController extends Controller
             $validator=Validator::make($request->all(),
             [
                 'course_id'=>'required',
+                'user_id'=>'required'
             ]);
             if($validator->fails())
             {
@@ -92,7 +93,7 @@ class CourseController extends Controller
             }
             $courseDetails = Course::where('id',$request->course_id)->latest()->first();
             $data = [
-                'user_id' => Auth::user()->id,
+                'user_id' => $request->user_id,
                 'course_id' => $request->course_id,
                 'amount' => $courseDetails->discount_fee,
                 'payment_status' => 'pending'
@@ -118,6 +119,8 @@ class CourseController extends Controller
             [
                 'payment_id'=>'required',
                 'payment_status' => 'required',
+                'user_id'=>'required',
+                'mobile'=>'required'
             ]);
             if($validator->fails())
             {
